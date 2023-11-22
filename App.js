@@ -101,6 +101,7 @@ export default function App() {
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   });
+  const [selectedEvent, setSelectedEvent] = useState(null);
 
   const handleSheetChanges = useCallback((index) => {
     console.log('handleSheetChanges', index);
@@ -135,7 +136,10 @@ export default function App() {
               coordinate={marker.coordinates}
               title={marker.city}
               description={marker.country}
-              onPress={() => bottomSheetRef.current?.snapToIndex(1)}
+              onPress={() => {
+                setSelectedEvent(marker);
+                bottomSheetRef.current?.snapToIndex(1);
+              }}
             />
           ))}
         </MapView>
@@ -152,7 +156,10 @@ export default function App() {
             keyExtractor={item => item.city}
             showsVerticalScrollIndicator={false}
             renderItem={({item}) => (
-              <View style={{ padding: 6, }} className="mx-2 mb-2 border rounded-md border-gray-200">
+              <View style={{ padding: 6, }}
+                    className={`mx-2 mb-2 border rounded-md border-gray-200 
+                    ${item === selectedEvent && 'bg-purple-100 border-purple-200'}`
+              }>
                 <Text style={{ fontSize: 16, fontWeight: 'bold' }}>{item.city}</Text>
                 <Text style={{ fontSize: 12 }}>{item.country}</Text>
               </View>
