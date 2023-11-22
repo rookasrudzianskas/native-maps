@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import MapView from 'react-native-maps';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 
 export default function App() {
   const [region, setRegion] = useState({
@@ -18,6 +18,11 @@ export default function App() {
         provider={'google'}
         onRegionChangeComplete={setRegion}
       />
+
+      <View className="absolute bottom-7 border border-gray-400 rounded-sm bg-white p-2 left-5 right-5 ">
+        <Text>Latitude: {region.latitude}</Text>
+        <Text>Longitude: {region.longitude}</Text>
+      </View>
     </View>
   );
 }
