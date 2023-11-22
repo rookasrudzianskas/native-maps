@@ -1,6 +1,6 @@
 import React, {useState, useCallback, useMemo, useRef} from 'react';
 import MapView, {Marker} from 'react-native-maps';
-import { StyleSheet, View, Text } from 'react-native';
+import {StyleSheet, View, Text, FlatList} from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import BottomSheet from '@gorhom/bottom-sheet';
 
@@ -94,7 +94,7 @@ export default function App() {
   const [meetingPoint, setMeetingPoint] = useState({
     latitude: 37.78825,
     longitude: -122.4324,
-  })
+  });
   const [region, setRegion] = useState({
     latitude: 37.78825,
     longitude: -122.4324,
@@ -147,9 +147,16 @@ export default function App() {
           snapPoints={snapPoints}
           onChange={handleSheetChanges}
         >
-          <View style={styles.contentContainer}>
-            <Text>Awesome 🎉</Text>
-          </View>
+          <FlatList
+            data={MARKERS}
+            keyExtractor={item => item.city}
+            renderItem={({item}) => (
+              <View style={{ padding: 16 }}>
+                <Text style={{ fontSize: 16, fontWeight: 'bold' }}>{item.city}</Text>
+                <Text style={{ fontSize: 12 }}>{item.country}</Text>
+              </View>
+            )}
+          />
         </BottomSheet>
       </View>
     </GestureHandlerRootView>
