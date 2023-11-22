@@ -1,6 +1,6 @@
 import React, {useState, useCallback, useMemo, useRef} from 'react';
 import MapView, {Marker} from 'react-native-maps';
-import {StyleSheet, View, Text, FlatList} from 'react-native';
+import {StyleSheet, View, Text, FlatList, TouchableOpacity} from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import BottomSheet from '@gorhom/bottom-sheet';
 
@@ -89,6 +89,7 @@ const MARKERS = [
 
 export default function App() {
   const bottomSheetRef = useRef(null);
+  const mapViewRef = useRef(null);
   const snapPoints = useMemo(() => ['25%', '50%'], []);
 
   const [meetingPoint, setMeetingPoint] = useState({
@@ -111,6 +112,7 @@ export default function App() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <View className="flex flex-1">
         <MapView
+          ref={mapViewRef}
           style={styles.map}
           initialRegion={region}
           showsUserLocation={true}
@@ -156,13 +158,24 @@ export default function App() {
             keyExtractor={item => item.city}
             showsVerticalScrollIndicator={false}
             renderItem={({item}) => (
-              <View style={{ padding: 6, }}
+              <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => {
+                  setSelectedEvent(item);
+                  mapViewRef.current?.animateToRegion({
+                    ...item.coordinates,
+                    latitudeDelta: 0.0922,
+                    longitudeDelta: 0.0421,
+                  })
+                bottomSheetRef.current?.snapToIndex(0);
+                }}
+                style={{ padding: 6, }}
                     className={`mx-2 mb-2 border rounded-md border-gray-200 
                     ${item === selectedEvent && 'bg-purple-100 border-purple-200'}`
               }>
                 <Text style={{ fontSize: 16, fontWeight: 'bold' }}>{item.city}</Text>
                 <Text style={{ fontSize: 12 }}>{item.country}</Text>
-              </View>
+              </TouchableOpacity>
             )}
           />
         </BottomSheet>
