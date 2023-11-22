@@ -102,6 +102,18 @@ export default function App() {
         provider={'google'}
         followsUserLocation={true}
         onRegionChangeComplete={setRegion}>
+
+        <Marker
+          coordinate={{
+            latitude: 37.78825,
+            longitude: -122.4324,
+          }}
+          title={"New York City"}
+          description={"New York City"}
+          pinColor={"purple"}
+          draggable={true}
+        />
+
         {MARKERS.map((marker, index) => (
           <Marker
             key={index}
