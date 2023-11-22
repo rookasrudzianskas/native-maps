@@ -88,6 +88,9 @@ const MARKERS = [
 ]
 
 export default function App() {
+  const bottomSheetRef = useRef(null);
+  const snapPoints = useMemo(() => ['25%', '50%'], []);
+
   const [meetingPoint, setMeetingPoint] = useState({
     latitude: 37.78825,
     longitude: -122.4324,
@@ -99,12 +102,6 @@ export default function App() {
     longitudeDelta: 0.0421,
   });
 
-  // const bottomSheetRef = useRef<BottomSheet>(null);
-
-  // variables
-  const snapPoints = useMemo(() => ['25%', '50%'], []);
-
-  // callbacks
   const handleSheetChanges = useCallback((index) => {
     console.log('handleSheetChanges', index);
   }, []);
@@ -138,12 +135,14 @@ export default function App() {
               coordinate={marker.coordinates}
               title={marker.city}
               description={marker.country}
+              onPress={() => bottomSheetRef.current?.snapToIndex(1)}
             />
           ))}
         </MapView>
 
         <BottomSheet
-          // ref={bottomSheetRef}
+          ref={bottomSheetRef}
+          enablePanDownToClose={true}
           index={1}
           snapPoints={snapPoints}
           onChange={handleSheetChanges}
