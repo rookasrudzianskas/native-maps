@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import MapView from 'react-native-maps';
+import MapView, {Marker} from 'react-native-maps';
 import { StyleSheet, View, Text } from 'react-native';
 
 export default function App() {
@@ -17,8 +17,17 @@ export default function App() {
         initialRegion={region}
         showsUserLocation={true}
         provider={'google'}
-        onRegionChangeComplete={setRegion}
-      />
+        followsUserLocation={true}
+        onRegionChangeComplete={setRegion}>
+          <Marker
+            coordinate={{
+              latitude: 37.78825,
+              longitude: -122.4324,
+            }}
+            title={"Something"}
+            description={"New location"}
+          />
+      </MapView>
 
       <View className="absolute bottom-7 border border-gray-400 rounded-sm bg-white p-2 left-5 right-5 ">
         <Text>Latitude: {region.latitude}</Text>
