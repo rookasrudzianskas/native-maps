@@ -150,8 +150,9 @@ export default function App() {
           <FlatList
             data={MARKERS}
             keyExtractor={item => item.city}
+            showsVerticalScrollIndicator={false}
             renderItem={({item}) => (
-              <View style={{ padding: 16 }}>
+              <View style={{ padding: 6, }} className="mx-2 mb-2 border rounded-md border-gray-200">
                 <Text style={{ fontSize: 16, fontWeight: 'bold' }}>{item.city}</Text>
                 <Text style={{ fontSize: 12 }}>{item.country}</Text>
               </View>
