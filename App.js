@@ -127,6 +127,9 @@ export default function App() {
       </MapView>
 
       <View className="absolute bottom-7 border border-gray-400 rounded-sm bg-white p-2 left-5 right-5 ">
+        <Text>Meeting Point</Text>
+        <Text>Latitude: {meetingPoint.latitude.toFixed(2)}</Text>
+        <Text>Longitude: {meetingPoint.longitude.toFixed(2)}</Text>
         <Text>Latitude: {region.latitude}</Text>
         <Text>Longitude: {region.longitude}</Text>
       </View>
