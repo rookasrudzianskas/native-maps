@@ -15,6 +15,7 @@ export default function App() {
       <MapView
         style={styles.map}
         initialRegion={region}
+        showsUserLocation={true}
         provider={'google'}
         onRegionChangeComplete={setRegion}
       />
