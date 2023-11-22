@@ -135,6 +135,7 @@ export default function App() {
           {MARKERS.map((marker, index) => (
             <Marker
               key={index}
+              pinColor={marker === selectedEvent ? 'purple' : 'red'}
               coordinate={marker.coordinates}
               title={marker.city}
               description={marker.country}
@@ -164,8 +165,8 @@ export default function App() {
                   setSelectedEvent(item);
                   mapViewRef.current?.animateToRegion({
                     ...item.coordinates,
-                    latitudeDelta: 0.0922,
-                    longitudeDelta: 0.0421,
+                    latitudeDelta: 0.012,
+                    longitudeDelta: 0.012,
                   })
                 bottomSheetRef.current?.snapToIndex(0);
                 }}
