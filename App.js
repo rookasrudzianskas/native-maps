@@ -86,6 +86,7 @@ const MARKERS = [
 ]
 
 export default function App() {
+  const [meetingPoint, setMeetingPoint] = useState({})
   const [region, setRegion] = useState({
     latitude: 37.78825,
     longitude: -122.4324,
@@ -112,6 +113,7 @@ export default function App() {
           description={"New York City"}
           pinColor={"purple"}
           draggable={true}
+          onDragEnd={(e) => setMeetingPoint(e.nativeEvent.coordinate)}
         />
 
         {MARKERS.map((marker, index) => (
