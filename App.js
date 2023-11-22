@@ -1,6 +1,8 @@
-import React, {useState} from 'react';
+import React, {useState, useCallback, useMemo, useRef} from 'react';
 import MapView, {Marker} from 'react-native-maps';
 import { StyleSheet, View, Text } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import BottomSheet from '@gorhom/bottom-sheet';
 
 const MARKERS = [
   {
@@ -86,7 +88,10 @@ const MARKERS = [
 ]
 
 export default function App() {
-  const [meetingPoint, setMeetingPoint] = useState({})
+  const [meetingPoint, setMeetingPoint] = useState({
+    latitude: 37.78825,
+    longitude: -122.4324,
+  })
   const [region, setRegion] = useState({
     latitude: 37.78825,
     longitude: -122.4324,
@@ -94,46 +99,61 @@ export default function App() {
     longitudeDelta: 0.0421,
   });
 
+  // const bottomSheetRef = useRef<BottomSheet>(null);
+
+  // variables
+  const snapPoints = useMemo(() => ['25%', '50%'], []);
+
+  // callbacks
+  const handleSheetChanges = useCallback((index) => {
+    console.log('handleSheetChanges', index);
+  }, []);
+
   return (
-    <View className="flex flex-1">
-      <MapView
-        style={styles.map}
-        initialRegion={region}
-        showsUserLocation={true}
-        provider={'google'}
-        followsUserLocation={true}
-        onRegionChangeComplete={setRegion}>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <View className="flex flex-1">
+        <MapView
+          style={styles.map}
+          initialRegion={region}
+          showsUserLocation={true}
+          provider={'google'}
+          followsUserLocation={true}
+          onRegionChangeComplete={setRegion}>
 
-        <Marker
-          coordinate={{
-            latitude: 37.78825,
-            longitude: -122.4324,
-          }}
-          title={"New York City"}
-          description={"New York City"}
-          pinColor={"purple"}
-          draggable={true}
-          onDragEnd={(e) => setMeetingPoint(e.nativeEvent.coordinate)}
-        />
-
-        {MARKERS.map((marker, index) => (
           <Marker
-            key={index}
-            coordinate={marker.coordinates}
-            title={marker.city}
-            description={marker.country}
+            coordinate={{
+              latitude: 37.78825,
+              longitude: -122.4324,
+            }}
+            title={"New York City"}
+            description={"New York City"}
+            pinColor={"purple"}
+            draggable={true}
+            onDragEnd={(e) => setMeetingPoint(e.nativeEvent.coordinate)}
           />
-        ))}
-      </MapView>
 
-      <View className="absolute bottom-7 border border-gray-400 rounded-sm bg-white p-2 left-5 right-5 ">
-        <Text>Meeting Point</Text>
-        <Text>Latitude: {meetingPoint.latitude.toFixed(2)}</Text>
-        <Text>Longitude: {meetingPoint.longitude.toFixed(2)}</Text>
-        <Text>Latitude: {region.latitude}</Text>
-        <Text>Longitude: {region.longitude}</Text>
+          {MARKERS.map((marker, index) => (
+            <Marker
+              key={index}
+              coordinate={marker.coordinates}
+              title={marker.city}
+              description={marker.country}
+            />
+          ))}
+        </MapView>
+
+        <BottomSheet
+          // ref={bottomSheetRef}
+          index={1}
+          snapPoints={snapPoints}
+          onChange={handleSheetChanges}
+        >
+          <View style={styles.contentContainer}>
+            <Text>Awesome 🎉</Text>
+          </View>
+        </BottomSheet>
       </View>
-    </View>
+    </GestureHandlerRootView>
   );
 }
 
@@ -144,5 +164,9 @@ const styles = StyleSheet.create({
   map: {
     width: '100%',
     height: '100%',
+  },
+  contentContainer: {
+    flex: 1,
+    alignItems: 'center',
   },
 });
